@@ -79,3 +79,36 @@ class MobStingray(Mob):     # а скат тупо наносит много у�
 
     def __init__(self):
         super().__init__(self.hp, self.damage)
+
+
+class MobSpider(Mob):       # почти как змея, но от яда урон растёт сильнее, при этом 1 удар наносит ничтожные 5 урона
+    hp = 30                 # также немного регенится во время хода
+    damage = -20
+    poison = 25
+    regeneration = 0
+
+    def __init__(self):
+        super().__init__(self.hp, self.damage)
+
+    def get_damage(self):
+        self.damage += self.poison
+        self.hp += self.regeneration
+        self.regeneration += 5
+        return self.damage
+
+
+class MobTurtle(Mob):       # черепаха с каждым ударом по ней принимает меньше урона
+    hp = 50                 # наверное это можно будет сломать но мне пофиг
+    damage = 10
+    defence = 1
+
+    def __init__(self):
+        super().__init__(self.hp, self.damage)
+
+    def set_damage(self, damage):
+        started_hp = self.hp
+        self.hp -= damage
+        self.hp += self.defence
+        self.defence += 3
+        if self.hp >= started_hp:
+            self.hp = started_hp - 1
