@@ -10,6 +10,7 @@ class Player:
     inventory = []
     arts = [0]
     Subs = Subjects()
+    luck = int()
 
     def __init__(self):
         self.hp = 100
@@ -18,6 +19,7 @@ class Player:
         self.weapon = -1
         self.armor = 101
         self.inventory.append(302)
+        self.luck = 0
 
     @staticmethod
     def lvl_up(lvl, xp):
@@ -47,6 +49,9 @@ class Player:
     def get_arts(self):
         return self.arts        # id
 
+    def get_luck(self):
+        return self.luck
+
     def damage(self, damage):
         self.hp -= damage
 
@@ -59,4 +64,3 @@ class Player:
 
     def get_chance(self):
         return self.Subs.get_weapon_chance(self.weapon) * self.Subs.get_armor_chance(self.armor)
-
