@@ -19,6 +19,7 @@ class Player:
         self.weapon = -1
         self.armor = 101
         self.inventory.append(302)
+        self.inventory.append(304)
         self.luck = 0
 
     @staticmethod

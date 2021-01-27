@@ -48,3 +48,6 @@ class Subjects:
 
     def get_armor_chance(self, i):
         return self.armor[i[1]]
+
+    def get_all_subjects(self):
+        return self.subjects.items()

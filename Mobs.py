@@ -1,10 +1,12 @@
 class Mob:      # моб в общем, остальные мобы наследники класса Mob
     hp = int()
     damage = int()
+    rank = int()
 
-    def __init__(self, hp, damage):
+    def __init__(self, hp, damage, rank):
         self.hp = hp
         self.damage = damage
+        self.rank = rank
 
     def get_hp(self):
         return self.hp
@@ -19,26 +21,29 @@ class Mob:      # моб в общем, остальные мобы наслед
 class MobGoblin(Mob):
     hp = 25
     damage = 10
+    rank = 1
 
     def __init__(self):
-        super().__init__(self.hp, self.damage)
+        super().__init__(self.hp, self.damage, self.rank)
 
 
 class MobCrow(Mob):
     hp = 15
     damage = 20
+    rank = 1
 
     def __init__(self):
-        super().__init__(self.hp, self.damage)
+        super().__init__(self.hp, self.damage, self.rank)
 
 
 class MobSnake(Mob):        # собственно зачем реализовывал наследование, змея ядовитит дофига, похожее ещё будет
     hp = 20
     damage = 10
+    rank = 2
     poison = 5
 
     def __init__(self):
-        super().__init__(self.hp, self.damage)
+        super().__init__(self.hp, self.damage, self.rank)
 
     def get_damage(self):
         self.damage += self.poison
@@ -49,9 +54,10 @@ class MobLilDragon(Mob):        # огонь работает почти так�
     hp = 50
     damage = 10
     fire = 10
+    rank = 2
 
     def __init__(self):
-        super().__init__(self.hp, self.damage)
+        super().__init__(self.hp, self.damage, self.rank)
 
     def get_damage(self):
         self.damage += self.fire
@@ -62,9 +68,10 @@ class MobLilDragon(Mob):        # огонь работает почти так�
 class MobBat(Mob):     # летучая мыш уже вомпирит дофига, то есть восстанавливает себе столько hp, сколько нанесла урона
     hp = 20
     damage = 15
+    rank = 3
 
     def __init__(self):
-        super().__init__(self.hp, self.damage)
+        super().__init__(self.hp, self.damage, self.rank)
 
     def get_damage(self):
         self.hp += self.damage
@@ -76,9 +83,10 @@ class MobBat(Mob):     # летучая мыш уже вомпирит дофи�
 class MobStingray(Mob):     # а скат тупо наносит много урона он же скат лмао
     hp = 30
     damage = 45
+    rank = 3
 
     def __init__(self):
-        super().__init__(self.hp, self.damage)
+        super().__init__(self.hp, self.damage, self.rank)
 
 
 class MobSpider(Mob):       # почти как змея, но от яда урон растёт сильнее, при этом 1 удар наносит ничтожные 5 урона
@@ -86,9 +94,10 @@ class MobSpider(Mob):       # почти как змея, но от яда ур�
     damage = -20
     poison = 25
     regeneration = 0
+    rank = 4
 
     def __init__(self):
-        super().__init__(self.hp, self.damage)
+        super().__init__(self.hp, self.damage, self.rank)
 
     def get_damage(self):
         self.damage += self.poison
@@ -101,9 +110,10 @@ class MobTurtle(Mob):       # черепаха с каждым ударом по
     hp = 50                 # наверное это можно будет сломать но мне пофиг
     damage = 10
     defence = 1
+    rank = 4
 
     def __init__(self):
-        super().__init__(self.hp, self.damage)
+        super().__init__(self.hp, self.damage, self.rank)
 
     def set_damage(self, damage):
         started_hp = self.hp
