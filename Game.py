@@ -2,6 +2,8 @@ from Player import Player
 from Subjects import Subjects
 import Mobs
 from Loot import Loot
+from Event import Event
+from random import randint
 
 
 """
@@ -51,25 +53,90 @@ def genomanual():
     print("Любая команда для возврата назад...")
 
 
+def fight_stats(player, mob):
+    print("Твоё HP:", player.get_hp())
+    print("HP Врага:", mob.get_hp())
+    print("Команды:")
+    print("1:Атака")
+    print("2:Инвентарь")
+
+
+def fight_player_attack(player):
+    print("Вы аттакуете:")
+    damage = player.get_damage()
+    chance = player.get_chance() * 100
+    if chance < randint(1, 100):
+        return 0
+    else:
+        return damage
+
+
+def fight_mob_attack(mob):
+    print("Моб аттакует:")
+    damage = mob.get_damage()
+    return damage
+
+
 Player = Player()
 Subs = Subjects()
 Loot = Loot()
+Event = Event()
+MobGenerator = Mobs.MobGenerator()
 
 begins()
 
 while True:
     command = input()
-    if command == "1" or command == "Персонаж" or command == "персонаж":
+    if command == "1":
         player_stats(Player)
         command = input()
         begins()
-    elif command == "3" or command == "Инвентарь" or command == "инвентарь":
+    elif command == "3":
         inventory_stats(Player)
         command = input()
         begins()
-    elif command == "4" or command == "Геномануал" or command == "геномануал":
+    elif command == "4":
         genomanual()
         command = input()
         begins()
-    elif command == "2" or command == "Ход" or command == "ход":
-        print("ну ты сходил и че")
+    elif command == "2":
+        Event.set_luck(Player.get_luck())
+        event = Event.create_event()
+        if event == "mob":
+            print("У вас на пути моб, а именно:")
+            fight = True
+            MobGenerator.set_player_lvl(Player.get_lvl())
+            mob = MobGenerator.get_mob()
+            print(mob)
+            Mob = Mobs.Mob(0, 0, 0)
+            if mob == "Goblin":
+                Mob = Mobs.MobGoblin()
+            elif mob == "Crow":
+                Mob = Mobs.MobCrow()
+            while fight:
+                fight_stats(Player, Mob)
+                command = input()
+                if command == "1":
+                    damage = fight_player_attack(Player)
+                    if damage == 0:
+                        print("Неповезло, ты не аттакуешь")
+                    else:
+                        print("Вы наносите " + str(damage) + " урона")
+                        Mob.set_damage(damage)
+                    if Mob.get_hp() <= 0:
+                        print("Моб был убит")
+                        xp = Mob.get_rank() * 50
+                        print("Получено XP:", xp)
+                        Player.plus_xp(xp)
+                        fight = False
+                    else:
+                        print("Здоровье моба:", Mob.get_hp())
+                        damage = fight_mob_attack(Mob)
+                        print("Моб наносит " + str(damage) + " урона")
+                        Player.damage(damage)
+                        print("Ваше здоровье:", Player.get_hp())
+            print("Бой окончен, введите любую команду...")
+            Player.set_hp(100)
+            print("Здоровье восстановлено до 100, пока не придуман инвентарь с хиллками")
+            command = input()
+            begins()

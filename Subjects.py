@@ -38,16 +38,16 @@ class Subjects:
         return self.subjects[item]
 
     def get_weapon_damage(self, i):
-        return self.weapon[i[0]]
+        return self.weapon[i][0]
 
     def get_weapon_chance(self, i):
-        return self.weapon[i[1]]
+        return self.weapon[i][1]
 
     def get_armor_hp(self, i):
-        return self.armor[i[0]]
+        return self.armor[i][0]
 
     def get_armor_chance(self, i):
-        return self.armor[i[1]]
+        return self.armor[i][1]
 
     def get_all_subjects(self):
         return self.subjects.items()

@@ -1,3 +1,6 @@
+from random import randint
+
+
 class Mob:      # моб в общем, остальные мобы наследники класса Mob
     hp = int()
     damage = int()
@@ -14,8 +17,23 @@ class Mob:      # моб в общем, остальные мобы наслед
     def get_damage(self):
         return self.damage
 
+    def get_rank(self):
+        return self.rank
+
     def set_damage(self, damage):
         self.hp -= damage
+
+
+class MobGenerator:
+    tier_list = ["Goblin", "Crow", "Snake", "Lil Dragon", "Bat", "Stingray", "Spider", "Turtle"]
+    player_lvl = int()
+
+    def set_player_lvl(self, lvl):
+        self.player_lvl = lvl
+
+    def get_mob(self):
+        mob = randint(1, self.player_lvl * 2)
+        return self.tier_list[mob - 1]
 
 
 class MobGoblin(Mob):

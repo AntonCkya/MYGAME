@@ -65,3 +65,9 @@ class Player:
 
     def get_chance(self):
         return self.Subs.get_weapon_chance(self.weapon) * self.Subs.get_armor_chance(self.armor)
+
+    def set_hp(self, hp):
+        self.hp = hp
+
+    def heal(self, hp):
+        self.hp += hp
