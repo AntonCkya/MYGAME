@@ -5,7 +5,6 @@ from Loot import Loot
 from Event import Event
 from random import randint
 
-
 """
 HP - здоровье ( если становится ниже 0 персонаж умирает )
 XP - опыт ( получается от убийства врагов )
@@ -40,9 +39,11 @@ def player_stats(player):
 def inventory_stats(player):
     inventory = player.get_inventory()
     print("Инвентарь персонажа:")
-    for i in inventory:
-        print(Subs.get_item(i))
-    print("Любая команда для возврата назад...")
+    for i in enumerate(inventory):
+        print(i[0] + 1, ": ", end="")
+        print(Subs.get_item(i[1]))
+    print("Введите номер предмета, чтобы его использовать, или 0, чтобы выйти в меню")
+    return len(inventory)
 
 
 def genomanual():
@@ -77,6 +78,25 @@ def fight_mob_attack(mob):
     return damage
 
 
+def use(num_item, player):
+    id_item = player.get_inventory()[num_item - 1]
+    player.remove_from_inventory(num_item - 1)
+    if id_item == 301:
+        print("Лави оптечку")
+        player.heal(50)
+    elif id_item == 302:  # Пока градации по ходам нет ну я тупой че
+        print("Зато не андроид")
+        player.heal(10)
+        player.plus_luck(5)
+    elif id_item == 303:
+        print("Ну ты и токсик")
+        print(None)
+    elif id_item == 304:
+        print("Эта,.. чтоб руки не дрожали...")
+        player.heal(15)
+        player.plus_damage(5)
+
+
 Player = Player()
 Subs = Subjects()
 Loot = Loot()
@@ -84,6 +104,7 @@ Event = Event()
 MobGenerator = Mobs.MobGenerator()
 
 begins()
+acts = 0
 
 while True:
     command = input()
@@ -92,10 +113,15 @@ while True:
         command = input()
         begins()
     elif command == "3":
-        inventory_stats(Player)
+        inventory_size = inventory_stats(Player)
         command = input()
+        if 0 < int(command) <= inventory_size:
+            acts += 1
+            use(int(command), Player)
         begins()
+
     elif command == "4":
+        acts += 1
         genomanual()
         command = input()
         begins()
@@ -113,7 +139,9 @@ while True:
                 Mob = Mobs.MobGoblin()
             elif mob == "Crow":
                 Mob = Mobs.MobCrow()
+            # Сделай ещё мобов тута
             while fight:
+                acts += 1
                 fight_stats(Player, Mob)
                 command = input()
                 if command == "1":
@@ -135,8 +163,15 @@ while True:
                         print("Моб наносит " + str(damage) + " урона")
                         Player.damage(damage)
                         print("Ваше здоровье:", Player.get_hp())
+                else:
+                    inventory_size = inventory_stats(Player)
+                    command = input()
+                    if 0 < int(command) <= inventory_size:
+                        acts += 1
+                        use(int(command), Player)
             print("Бой окончен, введите любую команду...")
-            Player.set_hp(100)
-            print("Здоровье восстановлено до 100, пока не придуман инвентарь с хиллками")
             command = input()
             begins()
+        if event == "chest":
+            print(None)
+            # Сделай сундуки

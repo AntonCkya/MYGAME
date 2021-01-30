@@ -11,6 +11,7 @@ class Player:
     arts = [0]
     Subs = Subjects()
     luck = int()
+    external_damage = 0
 
     def __init__(self):
         self.hp = 100
@@ -24,7 +25,7 @@ class Player:
 
     @staticmethod
     def lvl_up(lvl, xp):
-        if xp > lvl * 100:
+        if xp >= lvl * 100:
             xp -= lvl * 100
             lvl += 1
         return lvl, xp
@@ -53,6 +54,9 @@ class Player:
     def get_luck(self):
         return self.luck
 
+    def plus_luck(self, l):
+        self.luck += l
+
     def damage(self, damage):
         self.hp -= damage
 
@@ -61,7 +65,7 @@ class Player:
         self.lvl, self.xp = Player.lvl_up(self.lvl, self.xp)
 
     def get_damage(self):
-        return self.Subs.get_weapon_damage(self.weapon)
+        return self.Subs.get_weapon_damage(self.weapon) + self.external_damage
 
     def get_chance(self):
         return self.Subs.get_weapon_chance(self.weapon) * self.Subs.get_armor_chance(self.armor)
@@ -71,3 +75,9 @@ class Player:
 
     def heal(self, hp):
         self.hp += hp
+
+    def remove_from_inventory(self, item):
+        self.inventory.pop(item)
+
+    def plus_damage(self, dmg):
+        self.external_damage += dmg
