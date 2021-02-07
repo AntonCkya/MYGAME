@@ -30,6 +30,7 @@ class Player:
             lvl += 1
         return lvl, xp
 
+    # getters:
     def get_hp(self):
         return self.hp
 
@@ -54,6 +55,44 @@ class Player:
     def get_luck(self):
         return self.luck
 
+    def get_damage(self):
+        return self.Subs.get_weapon_damage(self.weapon) + self.external_damage
+
+    def get_chance(self):
+        return self.Subs.get_weapon_chance(self.weapon) * self.Subs.get_armor_chance(self.armor)
+
+    def get_external_damage(self):
+        return self.external_damage
+
+    # setters:
+    def set_hp(self, hp):
+        self.hp = hp
+
+    def set_xp(self, xp):
+        self.xp = xp
+
+    def set_lvl(self, lvl):
+        self.lvl = lvl
+
+    def set_weapon(self, weapon):
+        self.weapon = weapon
+
+    def set_armor(self, armor):
+        self.armor = armor
+
+    def set_inventory(self, inventory):
+        self.inventory = inventory
+
+    def set_arts(self, arts):
+        self.arts = arts
+
+    def set_luck(self, luck):
+        self.luck = luck
+
+    def set_external_damage(self, external_damage):
+        self.external_damage = external_damage
+
+    # others:
     def plus_luck(self, l):
         self.luck += l
 
@@ -63,15 +102,6 @@ class Player:
     def plus_xp(self, xp):
         self.xp += xp
         self.lvl, self.xp = Player.lvl_up(self.lvl, self.xp)
-
-    def get_damage(self):
-        return self.Subs.get_weapon_damage(self.weapon) + self.external_damage
-
-    def get_chance(self):
-        return self.Subs.get_weapon_chance(self.weapon) * self.Subs.get_armor_chance(self.armor)
-
-    def set_hp(self, hp):
-        self.hp = hp
 
     def heal(self, hp):
         self.hp += hp

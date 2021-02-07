@@ -3,7 +3,9 @@ from Subjects import Subjects
 import Mobs
 from Loot import Loot
 from Event import Event
+
 from random import randint
+import json
 
 """
 HP - здоровье ( если становится ниже 0 персонаж умирает )
@@ -27,6 +29,8 @@ def begins():
     print("2:Ход")
     print("3:Инвентарь")
     print("4:Геномануал")
+    print("5:Сохранение")
+    print("0:Выход из игры")
 
 
 def player_stats(player):
@@ -52,6 +56,37 @@ def genomanual():
     for i in manual:
         print(*i)
     print("Любая команда для возврата назад...")
+
+
+def save_game(player):
+    pl = {
+        "hp": player.get_hp(),
+        "xp": player.get_xp(),
+        "lvl": player.get_lvl(),
+        "weapon": player.get_weapon(),
+        "armor": player.get_armor(),
+        "inventory": player.get_inventory(),
+        "arts": player.get_arts(),
+        "luck": player.get_luck(),
+        "external damage": player.get_external_damage()
+    }
+    with open("Save.json", 'w') as saving:
+        json.dump(pl, saving)
+    print('Игра сохранена')
+
+
+def load_game(player):
+    with open("Save.json", "r") as saving:
+        pl = json.load(saving)
+    player.set_hp(pl["hp"])
+    player.set_xp(pl["xp"])
+    player.set_lvl(pl["lvl"])
+    player.set_weapon(pl["weapon"])
+    player.set_armor(pl["armor"])
+    player.set_inventory(pl["inventory"])
+    player.set_arts(pl["arts"])
+    player.set_luck(pl["luck"])
+    player.set_external_damage(pl["external damage"])
 
 
 def fight_stats(player, mob):
@@ -103,6 +138,7 @@ Loot = Loot()
 Event = Event()
 MobGenerator = Mobs.MobGenerator()
 
+load_game(Player)
 begins()
 acts = 0
 
@@ -112,6 +148,14 @@ while True:
         player_stats(Player)
         command = input()
         begins()
+
+    elif command == "5":
+        save_game(Player)
+        begins()
+
+    elif command == "0":
+        break
+
     elif command == "3":
         inventory_size = inventory_stats(Player)
         command = input()
@@ -125,6 +169,7 @@ while True:
         genomanual()
         command = input()
         begins()
+
     elif command == "2":
         Event.set_luck(Player.get_luck())
         event = Event.create_event()
